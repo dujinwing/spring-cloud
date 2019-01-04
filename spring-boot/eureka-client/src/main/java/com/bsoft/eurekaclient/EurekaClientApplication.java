@@ -16,11 +16,12 @@ public class EurekaClientApplication {
     public static void main(String[] args) {
         SpringApplication.run(EurekaClientApplication.class, args);
     }
+
     @Value("${server.port}")
     String port;
 
-    @RequestMapping(value="/test")
-    public String test(@RequestParam(value="name") String name){
+    @RequestMapping(value = "/test")
+    public String test(@RequestParam(value = "name") String name) {
         return "hi " + name + " i'm from  " + port;
     }
 }
