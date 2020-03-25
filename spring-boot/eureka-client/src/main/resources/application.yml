@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: eureka-client
+  data:
+    mongodb:
+      uri: mongodb://spring:123456@localhost:27017/spring
 eureka:
   client:
     serviceUrl:

@@ -1,4 +1,4 @@
-package com.bsoft.configclient;
+package cn.dujr.configclient;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

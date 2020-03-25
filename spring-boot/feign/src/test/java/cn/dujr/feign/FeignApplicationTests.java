@@ -1,4 +1,4 @@
-package cn.dujr.configserver;
+package cn.dujr.feign;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ConfigServerApplicationTests {
+public class FeignApplicationTests {
 
     @Test
     public void contextLoads() {
