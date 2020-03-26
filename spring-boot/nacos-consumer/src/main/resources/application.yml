@@ -10,3 +10,7 @@ spring:
 service:
   hello:
     name: nacos-service
+feign:
+  hystrix:
+    enabled: true
+

@@ -1,5 +1,6 @@
 package cn.dujr.feign;
 
+import cn.dujr.feign.fallback.ClientFallBack;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author: 杜锦荣
  * @date: 2020-03-26
  */
-@FeignClient(value = "${service.hello.name}")
+@FeignClient(value = "${service.hello.name}",fallback = ClientFallBack.class)
 public interface Client {
     
     /** 
@@ -20,5 +21,5 @@ public interface Client {
     * @date: 2020-03-26 
     */ 
     @GetMapping("/hello")
-    String hello(@RequestParam("name") String hello);
+    String hello(@RequestParam("name") String name);
 }

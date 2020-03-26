@@ -1,5 +1,5 @@
 server:
-  port: 8862
+  port: 8861
 spring:
   application:
     name: nacos-service
