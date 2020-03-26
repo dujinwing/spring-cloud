@@ -1,7 +1,6 @@
 package cn.dujr.eurekaclient.controller;
 
 import cn.dujr.eurekaclient.entity.CoffeeEntity;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
