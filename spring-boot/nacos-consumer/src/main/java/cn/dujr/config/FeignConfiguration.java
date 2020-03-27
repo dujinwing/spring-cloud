@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FeignConfiguration {
     //feign配置类，可在此覆盖FeignClientsConfiguration类默认配置
+//    FeignClientsConfiguration feignClientsConfiguration;
 
     //覆盖配置重写次数
     @Bean

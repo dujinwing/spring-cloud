@@ -1,8 +1,10 @@
 package cn.dujr.feign;
 
+import cn.dujr.entity.User;
 import cn.dujr.feign.fallback.ClientFallBack;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -22,4 +24,8 @@ public interface Client {
     */ 
     @GetMapping("/hello")
     String hello(@RequestParam("name") String name);
+
+    @PostMapping("/sayHello")
+    User sayHello(User user);
+
 }

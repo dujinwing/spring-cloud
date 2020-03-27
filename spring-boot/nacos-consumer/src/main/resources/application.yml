@@ -1,16 +1,31 @@
+#服务端口号
 server:
   port: 8863
+
+#服务名
 spring:
   application:
     name: nacos-service-consumer
+  #nacos注册地址
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+#调用服务名称
 service:
   hello:
     name: nacos-service
+
+#开启hystrix断路器
 feign:
   hystrix:
     enabled: true
 
+#ribbon超时时间
+ribbon:
+    ReadTimeOut: 60000
+    ConnectTimeOut: 60000
+
+#前端访问端口
+frontend:
+  port: 9527

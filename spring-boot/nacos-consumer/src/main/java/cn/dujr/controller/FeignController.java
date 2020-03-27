@@ -1,9 +1,12 @@
 package cn.dujr.controller;
 
+import cn.dujr.entity.User;
 import cn.dujr.feign.Client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -21,5 +24,11 @@ public class FeignController {
     public String consumeByFeign(String name) {
         log.info("请求参数----》{}", name);
         return client.hello(name);
+    }
+
+    @PostMapping("/getUser")
+    public User getUser(@RequestBody User user) {
+        log.info("请求参数----》{}", user.toString());
+        return client.sayHello(user);
     }
 }
