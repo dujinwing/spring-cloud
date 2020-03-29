@@ -29,3 +29,14 @@ ribbon:
 #前端访问端口
 frontend:
   port: 9527
+
+#hystrix配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            #Hystrix默认超时时间是1秒，如果超出这个时间尚未做出反应，
+            #就会进入fallback,由于Bean的装配和懒加载机制，Feign首次请求都会加载比较慢
+            timeoutInMilliseconds: 5000

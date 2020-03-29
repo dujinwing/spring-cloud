@@ -1,5 +1,5 @@
 server:
-  port: 8769
+  port: 8080
 spring:
   application:
     name: zuul
@@ -11,7 +11,7 @@ zuul:
   routes:
     api-a:
       path: /api-a/**
-      serviceId: ribbon
+      serviceId: nacos-service
     api-b:
       path: /api-b/**
-      serviceId: feign
+      serviceId: nacos-service
