@@ -4,10 +4,15 @@ import feign.Retryer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+* @description: feign配置类，可在此覆盖FeignClientsConfiguration类默认配置
+* @param:
+* @return:
+* @author: 杜锦荣
+* @date: 2020-03-30
+*/
 @Configuration
 public class FeignConfiguration {
-    //feign配置类，可在此覆盖FeignClientsConfiguration类默认配置
-//    FeignClientsConfiguration feignClientsConfiguration;
 
     //覆盖配置重写次数
     @Bean
