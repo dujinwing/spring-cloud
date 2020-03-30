@@ -12,11 +12,16 @@ import org.springframework.stereotype.Component;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        JWTUser user = new JWTUser();
-        user.setId("1");
-        user.setUsername("test");
-        user.setPassword(new BCryptPasswordEncoder().encode("123"));
-        user.setRole("myRole");
-        return user;
+        if("admin".equals(username)) {
+            JWTUser user = new JWTUser();
+            user.setId("1");
+            user.setUsername(username);
+            user.setPassword(new BCryptPasswordEncoder().encode("123456"));
+            user.setRole("myRole");
+            return user;
+        }else{
+            return null;
+//            throw new UsernameNotFoundException("admin account access only!");
+        }
     }
 }

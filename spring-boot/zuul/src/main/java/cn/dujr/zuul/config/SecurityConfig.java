@@ -1,5 +1,6 @@
 package cn.dujr.zuul.config;
 
+import cn.dujr.zuul.filter.AuthenticationFailHandler;
 import cn.dujr.zuul.filter.BasicAuthentication;
 import cn.dujr.zuul.filter.JWTAuthenticationFilter;
 import com.alibaba.nacos.common.util.HttpMethod;
@@ -26,6 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private AuthenticationFailHandler authenticationFailHandler;
+
     @Autowired
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
@@ -62,10 +66,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api-b/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest().authenticated()
+                .and().formLogin().failureHandler(authenticationFailHandler)
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new BasicAuthentication(authenticationManager()));
-//        http.cors().and().csrf().disable()
 //                .authorizeRequests()
 //                // 测试用资源，需要验证了的用户才能访问
 //                .antMatchers("/api-a/**")

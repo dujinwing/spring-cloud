@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -33,25 +34,40 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
 
+        User loginUser = null;
+
         // 从输入流中获取到登录的信息
         try {
-//            User loginUser = new ObjectMapper().readValue(request.getInputStream(), User.class);
-            Map params = request.getParameterMap();
-            User loginUser = new User();
-            loginUser.setUsername("test");
-            loginUser.setPassword("123");
+            loginUser = new ObjectMapper().readValue(request.getInputStream(), User.class);
+
+            if(loginUser == null){
+                Map map = request.getParameterMap();
+                loginUser.setUsername(map.get("username").toString());
+                loginUser.setPassword(map.get("password").toString());
+            }
+
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword())
             );
         } catch (Exception e) {
             e.printStackTrace();
-            try {
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write("认证失败");
-            }catch (IOException e1){
-                e.printStackTrace();
+
+            if(loginUser == null){
+                Map map = request.getParameterMap();
+                loginUser.setUsername(map.get("username").toString());
+                loginUser.setPassword(map.get("password").toString());
             }
-            return null;
+
+            throw new UsernameNotFoundException("user not found");
+//            return authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword())
+//            );
+//            try {
+//                response.setCharacterEncoding("UTF-8");
+//                response.getWriter().write("authentication failed");
+//            }catch (IOException e1){
+//                e.printStackTrace();
+//            }
         }
     }
 
