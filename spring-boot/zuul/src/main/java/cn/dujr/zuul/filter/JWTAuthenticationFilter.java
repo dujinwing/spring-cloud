@@ -3,8 +3,10 @@ package cn.dujr.zuul.filter;
 import cn.dujr.zuul.JWTUtils;
 import cn.dujr.zuul.entity.JWTUser;
 import cn.dujr.zuul.entity.User;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -40,7 +43,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             loginUser = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
-            if(loginUser == null){
+            if (loginUser == null) {
                 Map map = request.getParameterMap();
                 loginUser.setUsername(map.get("username").toString());
                 loginUser.setPassword(map.get("password").toString());
@@ -49,25 +52,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword())
             );
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            if(loginUser == null){
-                Map map = request.getParameterMap();
-                loginUser.setUsername(map.get("username").toString());
-                loginUser.setPassword(map.get("password").toString());
-            }
-
-            throw new UsernameNotFoundException("user not found");
-//            return authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword())
-//            );
-//            try {
-//                response.setCharacterEncoding("UTF-8");
-//                response.getWriter().write("authentication failed");
-//            }catch (IOException e1){
-//                e.printStackTrace();
-//            }
+        } catch (IOException e) {
+            return null;
         }
     }
 
@@ -84,7 +70,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String role = "";
         Collection<? extends GrantedAuthority> authorities = jwtUser.getAuthorities();
-        for (GrantedAuthority authority : authorities){
+        for (GrantedAuthority authority : authorities) {
             role = authority.getAuthority();
         }
 
@@ -96,8 +82,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         String tokenStr = JWTUtils.TOKEN_PREFIX + token;
-        response.setHeader("token",tokenStr);
-        response.getWriter().write(tokenStr);
+
+        Map result = new HashMap();
+        result.put("accessToken", tokenStr);
+
+        response.setHeader("token", tokenStr);
+        response.getWriter().write(new JSONObject(result).toJSONString());
     }
 
     @Override

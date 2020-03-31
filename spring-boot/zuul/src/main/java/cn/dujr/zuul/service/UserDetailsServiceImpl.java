@@ -20,8 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             user.setRole("myRole");
             return user;
         }else{
-            return null;
-//            throw new UsernameNotFoundException("admin account access only!");
+            throw new UsernameNotFoundException("admin account access only!");
         }
     }
 }
